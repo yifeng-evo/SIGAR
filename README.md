@@ -1,42 +1,61 @@
 # SIGAR
-SIGAR: Split-read Inference of Genome Architecture and Rearrangements
+SIGAR: **S**plit-read **I**nference of **G**enome **A**rchitecture and **R**earrangements
 
 
-# Install
+## Install
+
 Prerequisites of SIGAR:
+
 Bowtie2 http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
+
 BWA http://bio-bwa.sourceforge.net
+
 SAMtools http://samtools.sourceforge.net
+
 python https://www.python.org/downloads/
+
 biopython https://biopython.org/wiki/Download
 
 No installation of SIGAR is needed. Just download all the scripts and you are ready to go!
+```
 git clone https://github.com/yifeng-evo/SIGAR 
+```
 
-# Quickstart
+## Quickstart
+```
 python SIGAR.py --genome MAC_genome.fasta --reads reads1.fq,reads2,fq  --output_dir SIGAR_output --path_to_SIGAR /path/to/your/sigar/folder/ --contiglist contiglist_MAC_genome.txt --output_name SIGAR -t 12
+```
 
-# Manual
+## Manual
 1. Check names of paired end reads.
 
-Be sure to rename paired end reads before running. BWA samfiles automatically removed "/1" "/2" at ends of read names.
-quick way to add "_1" or "_2" suffix to read names:
+***Be sure to rename paired end reads before running. BWA samfiles automatically removed "/1" "/2" at ends of read names.
+quick way to add "_1" or "_2" suffix to read names:***
 
 cat file1.fastq| paste - - - -| sed 's/^\(\S*\)/\1\_1/' | file1_u1.fastq
 
 cat file2.fastq| paste - - - -| sed 's/^\(\S*\)/\1\_2/' | file2_u2.fastq
 
-2. Generate contig list.
+2. Generate a list of interested contigs.
+
 A tab-delimited contig list needs to be provided in the format of "Contig\tcontig_length\n", one contig per line:
 e.g.:
-Contig1 3000
-Contig2 5600
+
+Contig1	3000
+
+Contig2	5600
+
 ...
+
 The contig list does not need to include all contigs in the input genome. It should contain at least one line.
 
 3. Run pipeline
 
-4, filter regions with abnormal coverage (optional) 
+Check all parameters by `python SIGAR.py -h`
+
+4. Filter regions with abnormal coverage (optional, highly recommended) 
+
+The results of SIGAR on certain genome regions could be noisy due to abnormal high coverage of that region. This could be caused by errors 
 
 
 Output file format:
