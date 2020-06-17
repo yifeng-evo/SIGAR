@@ -4,7 +4,7 @@ SIGAR: **S**plit-read **I**nference of **G**enome **A**rchitecture and **R**earr
 
 ## Install
 
-Prerequisites of SIGAR:
+Prerequisites of SIGAR (all should be installed in PATH):
 
 Bowtie2 http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
 
@@ -21,9 +21,10 @@ No installation of SIGAR is needed. Just download all the scripts and you are re
 git clone https://github.com/yifeng-evo/SIGAR 
 ```
 
-## Quickstart
+## Test
 ```
-python SIGAR.py --genome MAC_genome.fasta --reads reads1_u1.fq,reads2_u2.fq  --output_dir SIGAR_output --path_to_SIGAR /path/to/your/sigar/folder/ --contiglist contiglist_MAC_genome.txt --output_name SIGAR -t 12
+cd ./SIGAR
+python SIGAR.py --genome ./test_kit/test_mac.fna --reads ./test_kit/test.fq --output_dir ./test_sigar_output --path_to_sigar ./ --contiglist ./test_kit/contigname_test.txt --output_name test -t 1 1>std.out 2>std.err
 ```
 
 ## Manual
@@ -49,8 +50,17 @@ The contig list does not need to include all contigs in the input genome. It sho
 3. Run pipeline
 
 Check all parameters by `python SIGAR.py -h`
+
 ```
 python SIGAR.py --genome MAC_genome.fasta --reads reads1_u1.fq,reads2_u2.fq  --output_dir SIGAR_output --path_to_SIGAR /path/to/your/sigar/folder/ --contiglist contiglist_MAC_genome.txt --output_name SIGAR -t 12
+```
+You can either start with reads or use `--parse_only` to use the exsited bowtie2 and bwa sam files.
+
+*--parse-only*: Prepare your own Bowtie2 file (--bowtie2_file) and BWA file (--bwa_file). You can also use your preferred paramters when running Bowtie2 and BWA:
+```
+bowtie2 -x genome_bowtie2_index -U reads.fq -S bowtie2_end_to_end.sam 
+samtools view -b -f 4 bowtie2_end_to_end.sam | samtools bam2fq - > bowtie2_end_to_end_unmapped_reads.fq #To removed end-to-end mapped reads
+bwa mem genome_bwa_index bowtie2_end_to_end_unmapped_reads.fq > bwa_local.sam
 ```
 
 4. Filter regions with abnormal coverage (optional, ***highly recommended to remove false discovery***) 
@@ -91,11 +101,19 @@ IES summary: 1_rname    2_pointer_start    3_pointer_end    4_pointer_seq    5_I
 
 Scrambled summary:1_rname    2_MDS1_start    3_MDS1_end    4_MDS2_start    5_MDS2_end    6_query_read_ID    7_query_read_MDS1_start    8_query_read_MDS1_end    9_query_read_MDS2_start    10_query_read_MDS2_end    11_mapping_strand (minus; plus; or 0\t1 means two MDS have different mapping directions)
 ```
+Note all the positions are using 0-based index, half-open intervals like Python (https://railsware.com/blog/python-for-machine-learning-indexing-and-slicing-for-lists-tuples-strings-and-other-sequential-types/). For example in Pointer_summary:
+```
+OXYTRI_MAC_1	1561	1565	15	13	GATG
+```
+Meaning the pointer is on OXYTRI_MAC_1 from 1562-1565bp using 1-based index.
+
+And in Scrambled_summary:
+```
+OXYTRI_MAC_22542	227	259	311	360	SRR1013496.1471319_1	69	101	0	49	minus
+```
+Meaning MDS1 is 228-259bp using 1-based index. MDS2 is 312-360bp using 1-based index.
 
 All parameters for the run will be logged in `./SIGAR_output/commands.sh`
 
 The intermediate files are in ./bwa, ./bowtie2 and ./process. The `nosecondary_mapq_BWA_MIC_to_MAC.sam` can be used for reads mapping view using softwares like IGV. 
 
-
-#08/22/2019:
-I haven't tested parse-only function for a while. So I would recommend to start with reads. 
