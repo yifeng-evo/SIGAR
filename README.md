@@ -115,5 +115,5 @@ Meaning MDS1 is 228-259bp using 1-based index. MDS2 is 312-360bp using 1-based i
 
 All parameters for the run will be logged in `./SIGAR_output/commands.sh`
 
-The intermediate files are in ./bwa, ./bowtie2 and ./process. The `nosecondary_mapq_BWA_MIC_to_MAC.sam` can be used for reads mapping view using softwares like IGV. 
+The intermediate files are in ./bwa, ./bowtie2 and ./process. The `./bwa/nosecondary_mapq_BWA_MIC_to_MAC.sam` can be used for reads mapping view using softwares like IGV. 
 
