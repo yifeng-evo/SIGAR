@@ -56,7 +56,7 @@ python SIGAR.py --genome MAC_genome.fasta --reads reads1_u1.fq,reads2_u2.fq  --o
 ```
 You can either start with reads or use `--parse_only` to use the exsited bowtie2 and bwa sam files.
 
-*--parse-only*: Prepare your own Bowtie2 file (--bowtie2_file) and BWA file (--bwa_file). You can also use your preferred paramters when running Bowtie2 and BWA:
+*--parse-only*: Prepare your own Bowtie2 file (--bowtie2_file) and BWA file (--bwa_file). You can also use your preferred parameters when running Bowtie2 and BWA:
 ```
 bowtie2 -x genome_bowtie2_index -U reads.fq -S bowtie2_end_to_end.sam 
 samtools view -b -f 4 bowtie2_end_to_end.sam | samtools bam2fq - > bowtie2_end_to_end_unmapped_reads.fq #To removed end-to-end mapped reads
@@ -115,5 +115,5 @@ Meaning MDS1 is 228-259bp using 1-based index. MDS2 is 312-360bp using 1-based i
 
 All parameters for the run will be logged in `./SIGAR_output/commands.sh`
 
-The intermediate files are in ./bwa, ./bowtie2 and ./process. The `./bwa/nosecondary_mapq_BWA_MIC_to_MAC.sam` can be used for reads mapping view using softwares like IGV. 
+The intermediate files are in ./bwa, ./bowtie2 and ./process. The `./bwa/nosecondary_mapq_BWA_MIC_to_MAC.sam` can be used for reads mapping view using software like IGV. 
 
