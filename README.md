@@ -54,7 +54,7 @@ Check all parameters by `python SIGAR.py -h`
 ```
 python SIGAR.py --genome MAC_genome.fasta --reads reads1_u1.fq,reads2_u2.fq  --output_dir SIGAR_output --path_to_SIGAR /path/to/your/sigar/folder/ --contiglist contiglist_MAC_genome.txt --output_name SIGAR -t 12
 ```
-You can either start with reads or use `--parse_only` to use the exsited bowtie2 and bwa sam files.
+You can either start with reads or use `--parse_only` to use the existed bowtie2 and bwa sam files.
 
 *--parse-only*: Prepare your own Bowtie2 file (--bowtie2_file) and BWA file (--bwa_file). You can also use your preferred parameters when running Bowtie2 and BWA:
 ```
@@ -65,7 +65,7 @@ bwa mem genome_bwa_index bowtie2_end_to_end_unmapped_reads.fq > bwa_local.sam
 
 4. Filter regions with abnormal coverage (optional, ***highly recommended to remove false discovery***) 
 
-The results of SIGAR on certain genome regions could be noisy due to abnormal high coverage of that region. This could be caused by errors in genome assembly or the high repetitivity of the region.
+The results of SIGAR on certain genome regions could be noisy due to abnormal high coverage of that region. This could be caused by errors in genome assembly or the high repetition of the region.
 
 We are using pileup.sh from BBmap (https://sourceforge.net/projects/bbmap/) to calculate coverage of mapping in BWA files. This script is automatically included when you download SIGAR folder.
 
@@ -73,19 +73,20 @@ We are using pileup.sh from BBmap (https://sourceforge.net/projects/bbmap/) to c
 cd SIGAR_output/bwa
 pileup.sh -Xmx6g in=nosecondary_mapq_BWA_MIC_to_MAC.sam out=bwa_cov.txt bincov=bwa_100_cov binsize=100 stdev=t
 ```
-The above command line will output the average converage for every 100bp window in the genome of split reads (specified by `binsize=100`). The input file here nosecondary_mapq_BWA_MIC_to_MAC.sam is the file including all MIC split reads (unmapped reads in bowtie2 end-to-end) mapped to the reference genome. The coverage should follow normal distribution for uniquely-mapped MDS.
+The above command line will output the average coverage for every 100bp window in the genome of split reads (specified by `binsize=100`). The input file here `nosecondary_mapq_BWA_MIC_to_MAC.sam` is the file including all MIC split reads (unmapped reads in bowtie2 end-to-end) mapped to the reference genome. Since MIC genome is diploid, the unique MDS-MDS junctions should be evenly covered in this file.
+
 This 100bp window can be changed according to the user’s request.
 
-According to the coverage of your genome, you can specify a coverage threshould to filter your results using `coverage_filter.py`.
+According to the coverage of your genome in `bwa_cov.txt`, you can specify a maximum coverage threshould to filter your results using `coverage_filter.py`.
 ```
 cd SIGAR_output/results
 python coverage_filter.py junction_summary_SIGAR_output pointer_summary_SIGAR_output IES_summary_SIGAR_output scrambled_summary_SIGAR_output ../bwa/bwa_100_cov 100 300
 ```
-The first number indicates the binsize you used in pileup.sh. The second number is the threshould you want to use to screen your results. This step will generate a cov_filter file (all results in genome regions below your coverage threshould) and a cov_abnormal file including results that are in noisy regions.
+The first number indicates the binsize you used in pileup.sh. The second number is the threshold you want to use to screen your results. This step will generate a cov_filter file (all results in genome regions below your coverage threshold) and a cov_abnormal file including results that are in noisy regions.
 
 5. Filter results in telomeric regions (optional, ***recommended for low germline DNA coverage dataset*** )
 
-We observed when using whole cell DNA seq or dataset with low germline DNA coverage, a lot of rearrangement junctions/pointers will be inferred in telomeric regions. This could happen for ciliates with flexibility of telomere additions sites. You can filter the results to remove rearrangment features inferred in these regions.
+We observed when using whole cell DNA seq or dataset with low germline DNA coverage, a lot of rearrangement junctions/pointers will be inferred in telomeric regions. This could happen for ciliates with flexibility of telomere additions sites. You can filter the results to remove rearrangement features inferred in these regions.
 
 
 ## Interpret Output files
@@ -105,7 +106,7 @@ Note all the positions are using 0-based index, half-open intervals like Python 
 ```
 OXYTRI_MAC_1	1561	1565	15	13	GATG
 ```
-Meaning the pointer is on OXYTRI_MAC_1 from 1562-1565bp using 1-based index.
+Meaning the pointer is on OXYTRI_MAC_1 [1561,1565) using 0-based index, and is between 1562-1565bp using 1-based index.
 
 And in Scrambled_summary:
 ```
