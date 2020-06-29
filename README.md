@@ -77,7 +77,7 @@ The above command line will output the average coverage for every 100bp window i
 
 This 100bp window can be changed according to the user’s request.
 
-According to the coverage of your genome in `bwa_cov.txt`, you can specify a maximum coverage threshould to filter your results using `coverage_filter.py`.
+According to the coverage of your genome in `bwa_cov.txt`, you can specify a maximum coverage threshold to filter your results using `coverage_filter.py`.
 ```
 cd SIGAR_output/results
 python coverage_filter.py junction_summary_SIGAR_output pointer_summary_SIGAR_output IES_summary_SIGAR_output scrambled_summary_SIGAR_output ../bwa/bwa_100_cov 100 300
