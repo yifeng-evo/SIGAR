@@ -90,7 +90,7 @@ else:
 		sys.stderr.write("No bwa file provided")
 sys.stderr.write("------------------------analysis_starts------------------------\n")
 sys.stdout.write("------------------------analysis_starts------------------------\n")
-os.system("python "+args.path_to_sigar+"/0_remove_mds_rich_reads.py "+args.output_dir+"/bwa/nosecondary_mapq_BWA_MIC_to_MAC.sam "+str(args.insertion_ths)+" "+str(args.NM_threshould)+" "+str(args.mds_rich_ratio))
+os.system("python "+args.path_to_sigar+"/0_remove_mds_rich_reads.py "+args.output_dir+"/bwa/nosecondary_mapq_BWA_MIC_to_MAC.sam "+str(args.insertion_ths)+" "+str(args.NM_threshold)+" "+str(args.mds_rich_ratio))
 os.system("python "+args.path_to_sigar+"/1_bowtie2_bwa_parse_cigar.py "+args.output_dir+" "+args.contiglist+" "+str(args.clip_length)+" "+str(args.mds_align_ths)+" "+str(args.insertion_ths))
 os.system("sort -u -V "+args.output_dir+"/process/junction_output_script1.txt > "+args.output_dir+"/process/sorted_junction_output_script1.txt")
 os.system("python "+args.path_to_sigar+"/2_pointer.py "+args.output_dir+" "+str(args.mds_flanking_pointer)+" "+str(args.maxfreq))
