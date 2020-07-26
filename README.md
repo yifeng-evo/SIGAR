@@ -32,8 +32,8 @@ python SIGAR.py --genome ./test_kit/test_mac.fna --reads ./test_kit/test.fq --ou
 
 ***Be sure to rename paired end reads before running. BWA .sam files automatically remove "/1" "/2" at ends of read names, which will cause a problem for SIGAR to distinguish the two different paired end reads. Quick way to add "_1" or "_2" suffix to read names:***
 ```
-cat reads1.fastq| paste - - - -| sed 's/^\(\S*\)/\1\_1/' | reads1_u1.fastq
-cat reads2.fastq| paste - - - -| sed 's/^\(\S*\)/\1\_2/' | reads2_u2.fastq
+cat reads1.fastq| paste - - - -| sed 's/^\(\S*\)/\1\_1/' | tr "\t" "\n" > reads1_u1.fastq
+cat reads2.fastq| paste - - - -| sed 's/^\(\S*\)/\1\_2/' | tr "\t" "\n" > reads2_u2.fastq
 ```
 
 2. Generate a list of interested contigs.
